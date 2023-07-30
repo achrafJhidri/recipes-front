@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'shoppingApp';
+  public route : String = "recipe" ; 
+
+  selectRoute(route : String){
+    this.route=route; 
+  }
 }
