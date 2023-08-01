@@ -20,4 +20,7 @@ export class ShoppingListComponent implements OnInit {
   })
   this.ingredients= this.shoppingListService.getIngredients();
  }
+ canDeactivate() {
+    return confirm("you have unsaved data, you sure you want to quit this page ?")
+};
 }

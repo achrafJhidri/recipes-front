@@ -13,6 +13,8 @@ import { RecipesComponent } from './recipes/recipes.component';
 import { DropdownDirective } from './shared/dropdown.directive';
 import { ShoppingListService } from './shopping-list/shopping-List.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AuthService } from './auth.service';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -26,14 +28,15 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     ShoppingListEditComponent,
     RecipesComponent,
     DropdownDirective,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    LoginComponent
 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [ShoppingListService],
+  providers: [ShoppingListService,AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
