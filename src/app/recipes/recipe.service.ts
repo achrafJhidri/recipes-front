@@ -5,6 +5,7 @@ import { ShoppingListService } from '../shopping-list/shopping-List.service';
 
 @Injectable()
 export class RecipeService {
+ 
 
   private recipes : Recipe[] = [
     new Recipe("pancakes","Fluffy pancakes","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQK62GSZlxhbBCTGP1ldw97wXC4qwa1o2QwbQ&usqp=CAU",[new Ingredient("basla",66),new Ingredient("touma",15)]),
@@ -23,5 +24,10 @@ export class RecipeService {
   }
   addToShoppingList(recipe: Recipe){
     this.slService.addIngredients(recipe.ingredients);
+  }
+
+
+  getRecipieWithId(name: String): Recipe {
+    return this.recipes.find((recipe ) => recipe.name===name);
   }
 }

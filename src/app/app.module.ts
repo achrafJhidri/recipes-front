@@ -12,6 +12,7 @@ import { ShoppingListEditComponent } from './shopping-list/shopping-list-edit/sh
 import { RecipesComponent } from './recipes/recipes.component';
 import { DropdownDirective } from './shared/dropdown.directive';
 import { ShoppingListService } from './shopping-list/shopping-List.service';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { ShoppingListService } from './shopping-list/shopping-List.service';
     ShoppingListComponent,
     ShoppingListEditComponent,
     RecipesComponent,
-    DropdownDirective
+    DropdownDirective,
+    PageNotFoundComponent
 
   ],
   imports: [
