@@ -10,30 +10,14 @@ import { ActivatedRoute, Params } from '@angular/router';
   providers : [RecipeService]
 })
 export class RecipesComponent implements OnInit {
-  selectedRecipe : Recipe ;
 
-  constructor(private recipeService : RecipeService, private route: ActivatedRoute){
+
+  constructor(){
 
   }
   
   ngOnInit(): void {
-    this.route.params.subscribe(
-      (params : Params) => {
-      const name = params['id'];
-      if(name){
-        this.selectedRecipe = this.recipeService.getRecipieWithId(name);
-      }
-    },( error )=> {
-      console.log(error);
-    })
-    this.recipeService.selectedRecipe.subscribe(
-      (next : Recipe) => {this.selectedRecipe = next;},
-      (error) => {console.log(error);})
   }
 
 
-
-  onSelectRecipe(recipe : Recipe){
-    this.selectedRecipe = recipe;
-  }
 }

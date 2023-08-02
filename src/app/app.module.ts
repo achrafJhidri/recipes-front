@@ -15,6 +15,7 @@ import { ShoppingListService } from './shopping-list/shopping-List.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AuthService } from './auth.service';
 import { LoginComponent } from './login/login.component';
+import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { LoginComponent } from './login/login.component';
     RecipesComponent,
     DropdownDirective,
     PageNotFoundComponent,
-    LoginComponent
+    LoginComponent,
+    RecipeStartComponent
 
   ],
   imports: [
