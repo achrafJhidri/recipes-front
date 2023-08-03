@@ -17,6 +17,7 @@ import { AuthService } from './auth.service';
 import { LoginComponent } from './login/login.component';
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -26,19 +27,19 @@ import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component
     RecipeListComponent,
     RecipeItemComponent,
     RecipeDetailComponent,
+    RecipeStartComponent,
+    RecipeEditComponent,
+    RecipesComponent,
     ShoppingListComponent,
     ShoppingListEditComponent,
-    RecipesComponent,
-    DropdownDirective,
     PageNotFoundComponent,
     LoginComponent,
-    RecipeStartComponent,
-    RecipeEditComponent
-
+    DropdownDirective
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [ShoppingListService,AuthService],
   bootstrap: [AppComponent]
