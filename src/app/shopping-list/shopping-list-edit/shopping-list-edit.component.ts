@@ -1,27 +1,56 @@
-import { Component, ElementRef,  ViewChild } from '@angular/core';
+import { Component,   OnInit } from '@angular/core';
 import { Ingredient } from 'src/app/shared/Ingredient';
 import { ShoppingListService } from '../shopping-List.service';
-import { NgForm } from '@angular/forms';
+import {   FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-shopping-list-edit',
   templateUrl: './shopping-list-edit.component.html',
   styleUrls: ['./shopping-list-edit.component.css']
 })
-export class ShoppingListEditComponent {
-  @ViewChild("f") form : NgForm;
+export class ShoppingListEditComponent implements OnInit {
+  ingredientForm : FormGroup ;
+  editMode : boolean = false ;
+  index : number ;
   constructor(private slService : ShoppingListService){}
 
-  addIngredient(){
-    const ing = new Ingredient(this.form.value.name,this.form.value.amount)
-    this.slService.addIngredient(ing);
+  isValid(elementName : string){ 
+    const element = this.ingredientForm.get(elementName); 
+    return  element.touched && !element.valid ;
+  } 
+
+  ngOnInit(): void {
+    this.slService.editIngredientClicked.subscribe((index => {
+      const ingredient : Ingredient= this.slService.getIngredient(index);
+      this.editMode = true ;
+      this.index = index;
+  
+      this.ingredientForm.setValue({'name': ingredient.name, 'amount' : ingredient.amount});
+    }))
+
+    this.ingredientForm = new FormGroup({
+      'name' : new FormControl(null,[Validators.required,Validators.minLength(2)]),
+      "amount" : new FormControl(null,[Validators.min(1)])
+    })
+  }
+ 
+  onSubmit(){    
+    const ingredient = new Ingredient(this.ingredientForm.value.name,this.ingredientForm.value.amount);
+    if(this.editMode){
+      this.slService.editIngredient(this.index,ingredient)
+    }else {
+      this.slService.addIngredient(ingredient);
+    }
+    this.onReset();
   }
 
-  onSubmit(){
-    console.log(this.form)
+  onDelete(){
+    this.slService.deleteIngredient(this.index);
+    this.onReset();
   }
 
   onReset(){
-    this.form.reset();
+    this.ingredientForm.reset();
+    this.editMode= false;
   }
 }
