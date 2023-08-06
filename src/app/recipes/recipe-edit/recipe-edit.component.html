@@ -1,1 +1,76 @@
-<p>{{title}}</p>
+<div class="row">
+    <div class="col-xs-12">
+        <form  [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col-xs-12">
+                    <button class="btn btn-success" type="submit" [disabled]="!recipeForm.valid">SAVE</button>
+                    <button class="btn btn-danger" type="button"  (click)="onCancel()">Cancel</button>
+                </div>
+            </div>
+            <div class="row">   
+                <div class="col-xs-12"> 
+                    <div class="form-group">
+                        <label for="name">name</label>
+                        <input type="text" id="name" class="form-control" formControlName="name" required>
+                        <span *ngIf="isValid('name')" class="help-block">
+                            Please enter a valid name
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">   
+                <div class="col-xs-12"> 
+                    <div class="form-group">
+                        <label for="imagePath">imagePath</label>
+                        <input type="text" id="imagePath" #imagePath class="form-control" formControlName="imagePath" required>
+                        <span *ngIf="isValid('imagePath')" class="help-block">
+                            Please enter a valid imagePath
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row" >    
+                <div class="col-xs-12"> 
+                    <img [src]="imagePath.value" class="img-responsive">
+                </div>
+            </div>
+
+            <div class="row">   
+                <div class="col-xs-12"> 
+                    <div class="form-group">
+                        <label for="description">description</label>
+                        <textarea type="text" id="description" class="form-control" formControlName="description" rows="6" required ></textarea>
+                        <span *ngIf="isValid('description')" class="help-block">
+                            Please enter a valid name
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">   
+                <div class="col-xs-12" formArrayName="ingredients"> 
+                    <div class="row" 
+                        *ngFor="let ingredientCtrl of ingredientControlls; let i = index"
+                        [formGroupName]= "i" 
+                        style="margin-top: 10px;">
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control" formControlName="name">
+                        </div>
+                        <div class="col-xs-2">
+                            <input type="number" class="form-control" formControlName="amount">
+                        </div>
+                        <div class="col-xs-2">
+                            <button type="button"  class="btn btn-danger" (click)="onDeleteIngredient(i)">X</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-xs-12">
+                                <button type="button" class="btn btn-success" (click)="onAddIngredient()"> Add ingredients</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

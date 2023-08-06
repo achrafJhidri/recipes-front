@@ -24,8 +24,8 @@ export class ShoppingListService {
   }
 
   addIngredient( newIng : Ingredient ){
-    this.ingredients.push(...this.ingredients.filter(ingredient => ingredient.name=== newIng.name ).map(ing => { ing.amount=ing.amount+newIng.amount ; return ing }));
-    this.ingredients.pop();
+    //TODO update existing ones
+    this.ingredients.push(newIng);
     this.notifyIngredientsChanges();
   }
 

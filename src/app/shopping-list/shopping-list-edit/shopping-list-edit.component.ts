@@ -1,17 +1,19 @@
-import { Component,   OnInit } from '@angular/core';
+import { Component,   OnDestroy,   OnInit } from '@angular/core';
 import { Ingredient } from 'src/app/shared/Ingredient';
 import { ShoppingListService } from '../shopping-List.service';
 import {   FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-shopping-list-edit',
   templateUrl: './shopping-list-edit.component.html',
   styleUrls: ['./shopping-list-edit.component.css']
 })
-export class ShoppingListEditComponent implements OnInit {
+export class ShoppingListEditComponent implements OnInit,OnDestroy {
   ingredientForm : FormGroup ;
   editMode : boolean = false ;
   index : number ;
+  subscription : Subscription;
   constructor(private slService : ShoppingListService){}
 
   isValid(elementName : string){ 
@@ -20,7 +22,7 @@ export class ShoppingListEditComponent implements OnInit {
   } 
 
   ngOnInit(): void {
-    this.slService.editIngredientClicked.subscribe((index => {
+    this.subscription = this.slService.editIngredientClicked.subscribe((index => {
       const ingredient : Ingredient= this.slService.getIngredient(index);
       this.editMode = true ;
       this.index = index;
@@ -53,4 +55,9 @@ export class ShoppingListEditComponent implements OnInit {
     this.ingredientForm.reset();
     this.editMode= false;
   }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
 }
