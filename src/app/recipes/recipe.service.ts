@@ -1,22 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Recipe } from './recipe.model';
-import { Ingredient } from '../shared/Ingredient';
 import { ShoppingListService } from '../shopping-list/shopping-List.service';
 import { Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class RecipeService  {
 
-  private recipes : Recipe[] = [
-    new Recipe("pancakes","Fluffy pancakes","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQK62GSZlxhbBCTGP1ldw97wXC4qwa1o2QwbQ&usqp=CAU",[new Ingredient("basla",66),new Ingredient("touma",15)]),
-    new Recipe("beghrir","beghrir mt9oub mziaan","https://static.wixstatic.com/media/94e2e7_8ce40d0ac7dd4c3889f6513b7047af63~mv2.jpg/v1/fill/w_640,h_424,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/94e2e7_8ce40d0ac7dd4c3889f6513b7047af63~mv2.jpg",[new Ingredient("basla",2),new Ingredient("touma",10)]),
-  ]
+  readonly RECIPES_URL : string = "http://localhost:8080/recipes";
   recipesSubject : Subject<Recipe[]> = new Subject();
+  recipeSelected : Subject<Recipe> = new Subject();
 
-  constructor(private slService : ShoppingListService) { }
+  constructor(private slService : ShoppingListService , private http : HttpClient) { }
 
   getRecipies(){
-    return this.recipes.slice();
+    return this.http.get<Recipe[]>(this.RECIPES_URL)
   }
 
   addToShoppingList(recipe: Recipe){
@@ -24,24 +22,32 @@ export class RecipeService  {
   }
 
 
-  getRecipieWithIndex(index: number): Recipe {
-    return this.recipes.slice()[index];
+  getRecipieWithIndex(index: number) {
+    return this.http.get<Recipe>(this.RECIPES_URL+"/"+index)
   }
 
   addRecipe(recipe: Recipe) {
-    this.recipes.push(recipe);
-    this.notifyRecipesChange();
+    this.http.post<Recipe>(this.RECIPES_URL,recipe).subscribe(() => {
+      this.getRecipies().subscribe(recipes => {
+        this.recipesSubject.next(recipes)
+      })
+    });
   }
   editRecipe(index : number,recipe : Recipe) {
-    this.recipes[index]=recipe;    
-    this.notifyRecipesChange();
-  }
-  deleteRecipe(index : number){
-    this.recipes.splice(index,1);
-    this.notifyRecipesChange();
+    this.http.put(this.RECIPES_URL+"/"+index,recipe).subscribe(value =>{
+      //TODO control everyting went well in backend !
+      this.fetchAndNotifyRecipesChange();
+    })
   }
 
-  notifyRecipesChange(){
-    this.recipesSubject.next(this.recipes.slice());
+  deleteRecipe(index : number){
+    this.http.delete(this.RECIPES_URL+"/"+index).subscribe(value =>{
+      //TODO control everyting went well in backend !
+      this.fetchAndNotifyRecipesChange();
+    })
+  }
+
+  fetchAndNotifyRecipesChange(){ 
+    this.getRecipies().subscribe(recipes => {this.recipesSubject.next(recipes)})
   }
 }

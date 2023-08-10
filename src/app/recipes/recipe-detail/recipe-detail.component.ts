@@ -11,18 +11,31 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 export class RecipeDetailComponent implements OnInit {
   recipe : Recipe ;
   id : number;
+  isLoading : boolean = true;
+  errorMsg : string = null ;
   constructor(private recipeService : RecipeService,private route : ActivatedRoute,private router : Router){}
   
   addToShoppingList(){
     this.recipeService.addToShoppingList(this.recipe);
   }
 
+
+   
+   
+  
   ngOnInit(): void {
     this.route.params.subscribe(
       (params : Params) => {
       this.id = params['id'];
       if(this.id){
-        this.recipe = this.recipeService.getRecipieWithIndex(this.id);
+        this.recipeService.getRecipieWithIndex(this.id).subscribe((recipe) => {
+          this.recipe = recipe;
+          this.isLoading = false;
+        },(error ) => {
+          this.isLoading = false;
+          this.errorMsg = error.message
+          
+        });
       }
     },( error )=> {
       console.log(error);

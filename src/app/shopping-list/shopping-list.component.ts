@@ -12,14 +12,24 @@ import { RecipeService } from '../recipes/recipe.service';
 export class ShoppingListComponent implements OnInit,OnDestroy{
 
  ingredients : Ingredient[]  ;
- changedIngredientsSub : Subscription
- constructor ( private shoppingListService : ShoppingListService, private recipeService: RecipeService){}
+ isLoading =  true;
+ errorMsg = null;
+ changedIngredientsSub : Subscription ;
+ constructor ( private shoppingListService : ShoppingListService){}
 
   ngOnInit(){
     this.changedIngredientsSub = this.shoppingListService.changedIngredients.subscribe((ingredients : Ingredient[]) => {
       this.ingredients=ingredients;
     },(error) => {console.log(error);})
-    this.ingredients= this.shoppingListService.getIngredients();
+    this.shoppingListService.getIngredients().subscribe(
+      ingredients => {
+        this.isLoading = false;
+        this.ingredients= ingredients ;},
+      error => {
+        this.isLoading = false;
+        this.errorMsg = error.message
+        
+    });
   }
   canDeactivate() {
     return confirm("you have unsaved data, you sure you want to quit this page ?")
@@ -29,7 +39,7 @@ export class ShoppingListComponent implements OnInit,OnDestroy{
     this.changedIngredientsSub.unsubscribe();
   }
 
-  onStartEdit(index : number ){
-      this.shoppingListService.onStartEdit(index);
+  onStartEdit(index : number ,ingredient : Ingredient){
+      this.shoppingListService.onStartEdit({index,ingredient});
   }
 }

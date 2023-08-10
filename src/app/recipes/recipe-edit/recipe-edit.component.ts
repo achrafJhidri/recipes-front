@@ -3,7 +3,7 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../recipe.service';
 import { Ingredient } from 'src/app/shared/Ingredient';
-import { Recipe } from '../recipe.model';
+import { isValid } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -13,9 +13,10 @@ import { Recipe } from '../recipe.model';
 export class RecipeEditComponent implements OnInit{
   recipeForm : FormGroup;
   editMode : boolean = false ;
-  recipe : Recipe = null; 
   id : number  = null;
-  constructor(private route : ActivatedRoute, private recipeService : RecipeService,private router : Router){}
+  isLoading : boolean = true;
+  errorMsg : string = null;
+  constructor(private route : ActivatedRoute,private router : Router,  private recipeService : RecipeService){}
   
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -25,23 +26,40 @@ export class RecipeEditComponent implements OnInit{
     })
   }
 
-  initForm(){
+  private initForm(){
     let recipeName : String= ''
     let recipeImagePath : String = ''
     let recipeDescription : String = ''
     let ingredientsFormcontrolls : FormGroup[] = [] ; 
 
     if(this.editMode){
-      this.recipe = this.recipeService.getRecipieWithIndex(this.id);
-      recipeName = this.recipe.name;
-      recipeImagePath =this.recipe.imagePath;
-      recipeDescription = this.recipe.description;
-      ingredientsFormcontrolls  =  this.recipe.ingredients
-                                        .map((ingredient : Ingredient ) => 
-                                            new FormGroup({'name' : new FormControl(ingredient.name,Validators.required), 'amount' : new FormControl(ingredient.amount,[Validators.required,Validators.min(1)])}))
+      this.recipeService.getRecipieWithIndex(this.id).subscribe((recipe) => {
+        this.isLoading = false;
+        recipeName = recipe.name;
+        recipeImagePath =recipe.imagePath;
+        recipeDescription = recipe.description;
+        ingredientsFormcontrolls  =  recipe.ingredients
+                                          .map((ingredient : Ingredient ) => new FormGroup({
+                                              'name' : new FormControl(ingredient.name,Validators.required), 
+                                              'amount' : new FormControl(ingredient.amount,[Validators.required,Validators.min(1)])
+                                            }))                                            
+        //not duplicate 
+        //TODO find how to force rendering at this time so it uses the new values                                   
+        this.recipeForm = this.initFormWithValues(recipeName,recipeDescription,recipeImagePath,ingredientsFormcontrolls)                        
+        },
+        error => {
+          this.errorMsg = error.msg
+          this.isLoading = false; 
+        });;     
+    }else {
+      this.isLoading = false;
+      this.errorMsg = null;
+      this.recipeForm = this.initFormWithValues(recipeName,recipeDescription,recipeImagePath,ingredientsFormcontrolls)
     }
+  }
 
-    this.recipeForm = new FormGroup({
+  private initFormWithValues(recipeName,recipeDescription,recipeImagePath,ingredientsFormcontrolls){
+    return new FormGroup({
       'name' : new FormControl(recipeName,Validators.required),
       'description' : new FormControl(recipeDescription,Validators.required),
       'imagePath'  : new FormControl(recipeImagePath,Validators.required),
@@ -50,9 +68,9 @@ export class RecipeEditComponent implements OnInit{
   }
 
   onAddIngredient(){
-    (<FormArray>this.recipeForm.get("ingredients")).push(new FormGroup(
-      {'name' : new FormControl(null,Validators.required), 'amount' : new FormControl(null,[Validators.required,Validators.min(1)])}
-      ));
+    (<FormArray>this.recipeForm.get("ingredients")).push(new FormGroup({
+        'name' : new FormControl(null,Validators.required), 
+      'amount' : new FormControl(null,[Validators.required,Validators.min(1)])}));
   }
 
   onDeleteIngredient(i : number){
@@ -73,11 +91,7 @@ export class RecipeEditComponent implements OnInit{
   }
 
   isValid(elementName : string){    
-    if( this.recipeForm != null ) {
-      const element = this.recipeForm.get(elementName); 
-      return element.touched && !element.valid  ;
-    }else 
-    return true;
+      return isValid(this.recipeForm,elementName);
   } 
 
   get ingredientControlls() { 

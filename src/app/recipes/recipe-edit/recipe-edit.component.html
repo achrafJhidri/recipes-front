@@ -1,4 +1,7 @@
-<div class="row">
+<div class="row" *ngIf="editMode && isLoading">
+    Loading..
+</div>
+<div class="row" *ngIf="!isLoading && !errorMsg">
     <div class="col-xs-12">
         <form  [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
             <div class="row">
@@ -73,4 +76,8 @@
             </div>
         </form>
     </div>
+</div>
+
+<div  class="alert alert-danger" role="alert"  *ngIf="errorMsg">
+    {{errorMsg}}
 </div>
