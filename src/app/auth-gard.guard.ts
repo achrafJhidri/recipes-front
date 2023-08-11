@@ -1,19 +1,16 @@
 import { inject } from '@angular/core';
 import { CanActivateFn,CanActivateChildFn, Router } from '@angular/router';
+import { AuthService } from './auth.service';
+import { map, take } from 'rxjs';
 
 export const authGuard: CanActivateFn = (route, state ) => {
 
   const router = inject(Router);
-  return true
-  // inject(AuthService).isAuthenticated()
-  // .then((isAuthenticated : boolean) => {
-  //   if (isAuthenticated) return true;
-  //   else 
-  //       {
-  //         router.navigate(["login"]);
-  //         return false ;
-  //       }
-  // });
+  return inject(AuthService).authenticatedUser.pipe(
+    take(1),
+    map(user => {
+    return !!user ? true : router.createUrlTree(["/login"]);
+  }))
 };
 
 

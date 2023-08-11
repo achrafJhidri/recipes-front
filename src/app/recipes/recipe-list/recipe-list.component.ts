@@ -27,7 +27,7 @@ export class RecipeListComponent implements OnInit,OnDestroy {
     },
       error => {
         this.isLoading = false;
-        this.errorMsg = error.message
+        this.errorMsg = error.error
       });
   }
 

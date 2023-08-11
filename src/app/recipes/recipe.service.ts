@@ -11,10 +11,10 @@ export class RecipeService  {
   recipesSubject : Subject<Recipe[]> = new Subject();
   recipeSelected : Subject<Recipe> = new Subject();
 
-  constructor(private slService : ShoppingListService , private http : HttpClient) { }
+  constructor(private slService : ShoppingListService ,  private http : HttpClient ) { }
 
   getRecipies(){
-    return this.http.get<Recipe[]>(this.RECIPES_URL)
+      return this.http.get<Recipe[]>(this.RECIPES_URL);
   }
 
   addToShoppingList(recipe: Recipe){

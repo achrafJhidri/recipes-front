@@ -12,14 +12,8 @@
         <li routerLinkActive="active"><a routerLink="/shopping" *ngIf="isAuthenticated" >ShoppingList</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <!-- <a class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a >SaveData</a></li>
-            <li><a >FetchData</a></li>
-          </ul> -->
           <li routerLinkActive="active">
-            <a routerLink="/login" style="cursor: pointer;" (click)="toggleLogin()">{{isAuthenticated ? 'Logout' : 'Login'}}</a>
+            <a routerLink="/login" style="cursor: pointer;" (click)="onLogout()">{{isAuthenticated ? 'Logout' : 'Login'}}</a>
         </li>
       </ul>
     </div>
