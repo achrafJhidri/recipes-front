@@ -13,12 +13,14 @@ import { RecipesComponent } from './recipes/recipes.component';
 import { DropdownDirective } from './shared/dropdown.directive';
 import { ShoppingListService } from './shopping-list/shopping-List.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AuthService } from './auth.service';
-import { LoginComponent } from './login/login.component';
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecipeService } from '../app/recipes/recipe.service';
+import { HttpClientModule} from '@angular/common/http';
+import { AuthComponent } from './auth/auth.component'
+import { AuthService } from './auth.service';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -33,13 +35,16 @@ import { RecipeService } from '../app/recipes/recipe.service';
     ShoppingListComponent,
     ShoppingListEditComponent,
     PageNotFoundComponent,
-    LoginComponent,
-    DropdownDirective
+    DropdownDirective,
+    AuthComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule
   ],
   providers: [ShoppingListService,RecipeService,AuthService],
   bootstrap: [AppComponent]

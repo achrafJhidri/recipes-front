@@ -4,10 +4,10 @@ import { RecipesComponent } from './recipes/recipes.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { authChildGuard, authGuard } from './auth-gard.guard';
-import { LoginComponent } from './login/login.component';
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 import { RecipeDetailComponent } from './recipes/recipe-detail/recipe-detail.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
+import { AuthComponent } from './auth/auth.component';
 
 const routes: Routes = [
   {path:"", redirectTo : "/recipes",pathMatch : "full"},
@@ -22,7 +22,7 @@ const routes: Routes = [
   ]},
   
   {path:"shopping", component : ShoppingListComponent , canDeactivate : [(component : ShoppingListComponent) => component.canDeactivate()]},
-  {path:"login", component : LoginComponent},
+  {path:"login", component : AuthComponent },
   {path:"**", component : PageNotFoundComponent},
 ];
 

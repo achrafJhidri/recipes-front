@@ -8,16 +8,18 @@
     </div>
     <div class="navbar-collapse" [class.collapse]="collapsed" (window:resize)="collapsed = true">
       <ul class="nav navbar-nav">
-        <li routerLinkActive="active"><a routerLink="/recipes" >Recipes</a></li>
-        <li routerLinkActive="active"><a routerLink="/shopping" >ShoppingList</a></li>
+        <li routerLinkActive="active"><a routerLink="/recipes" *ngIf="isAuthenticated" >Recipes</a></li>
+        <li routerLinkActive="active"><a routerLink="/shopping" *ngIf="isAuthenticated" >ShoppingList</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
-          <a class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
+          <!-- <a class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a >SaveData</a></li>
             <li><a >FetchData</a></li>
-          </ul>
+          </ul> -->
+          <li routerLinkActive="active">
+            <a routerLink="/login" style="cursor: pointer;" (click)="toggleLogin()">{{isAuthenticated ? 'Logout' : 'Login'}}</a>
         </li>
       </ul>
     </div>
