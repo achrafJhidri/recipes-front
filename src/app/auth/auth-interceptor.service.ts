@@ -16,7 +16,7 @@ export class AuthInterceptorService implements HttpInterceptor{
           exhaustMap(user => {
             if(user)
             {
-              const httpHeaders = new HttpHeaders().append("Authorization",user.token);
+              const httpHeaders = new HttpHeaders().append("Authorization","Bearer "+user.token);
               const modifiedReq = req.clone({headers : httpHeaders });
               return next.handle(modifiedReq);
             }else

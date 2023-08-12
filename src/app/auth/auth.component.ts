@@ -36,7 +36,6 @@ export class AuthComponent {
       }  
 
     obs.subscribe((res )=> {
-        console.log(res);
         this.isLoading=false;
         this.route.navigate([''])
         },
