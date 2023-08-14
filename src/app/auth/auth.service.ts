@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import {  BehaviorSubject, catchError, tap, throwError } from 'rxjs';
 import { User } from '../shared/user.model';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment.development';
 
  export interface AuthResponseData {
   email : string,
@@ -18,20 +19,19 @@ import { Router } from '@angular/router';
 @Injectable()
 export class AuthService {
   readonly AUTH_URL : string = "https://identitytoolkit.googleapis.com/v1/accounts:";
-  readonly API_KEY : string = "key=AIzaSyBrZ6dF0t-eCLKs-rlbTshHWdg_dQx6LHk";
   authenticatedUser :  BehaviorSubject<User> = new BehaviorSubject<User>(null);
   private tokenExpirationTimer  : any ;
   constructor(private http : HttpClient,private router : Router) { }
 
   signUp(email : string , password  : string ){
-    return this.http.post<AuthResponseData>(this.AUTH_URL+"signUp?"+this.API_KEY,{
+    return this.http.post<AuthResponseData>(this.AUTH_URL+"signUp?key="+environment.firebaseApiKey,{
        email , password ,returnSecureToken : true
     })
     .pipe(catchError(this.handleError),tap( response => this.handleAuth(response)))
   }
 
   login(email : string , password  : string ){
-    return this.http.post<AuthResponseData>(this.AUTH_URL+"signInWithPassword?"+this.API_KEY,{
+    return this.http.post<AuthResponseData>(this.AUTH_URL+"signInWithPassword?key="+environment.firebaseApiKey,{
        email , password ,returnSecureToken : true
     })
     .pipe(catchError(this.handleError),tap( response => this.handleAuth(response)))
