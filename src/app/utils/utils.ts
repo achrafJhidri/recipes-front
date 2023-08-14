@@ -1,4 +1,4 @@
-import { Form, FormGroup, NgForm } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
 
 export const isValid = (form : FormGroup,elementName : string) : boolean => {    
     const element = form.get(elementName); 

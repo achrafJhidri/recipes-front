@@ -5,11 +5,11 @@ import { ShoppingListComponent } from "./shopping-list.component";
 
 
 const routes: Routes = [
-    {path:"shopping",
+    {path:"",
      canActivate : [authGuard] , 
      component : ShoppingListComponent , 
      canDeactivate : [(component : ShoppingListComponent) => component.canDeactivate()]}
-  ];
+];
 
 @NgModule({
     imports : [RouterModule.forChild(routes)],
