@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { RecipeEditComponent } from './recipe-edit/recipe-edit.component';
 import { RecipesComponent } from './recipes.component';
+import { RecipesRoutingModule } from './recipes-routing.module';
 
 
 
@@ -20,19 +21,12 @@ import { RecipesComponent } from './recipes.component';
     RecipeEditComponent,
     RecipesComponent
   ],
-  exports : [
-    RecipeListComponent,
-    RecipeItemComponent,
-    RecipeDetailComponent,
-    RecipeStartComponent,
-    RecipeEditComponent,
-    RecipesComponent,
-  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    RecipesRoutingModule
   ]
 }) 
 export class RecipesModule { }
