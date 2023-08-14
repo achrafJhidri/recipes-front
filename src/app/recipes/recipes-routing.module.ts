@@ -5,7 +5,7 @@ import { RecipesComponent } from './recipes.component';
 import { RecipeStartComponent } from './recipe-start/recipe-start.component';
 import { RecipeDetailComponent } from './recipe-detail/recipe-detail.component';
 import { RecipeEditComponent } from './recipe-edit/recipe-edit.component';
-import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from '../shared/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {path:"recipes", 
