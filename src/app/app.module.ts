@@ -6,20 +6,17 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AuthComponent } from './auth/auth.component'
 
 import { RecipesModule } from './recipes/recipes.module';
 import { ShoppingModule } from './shopping-list/shopping.module';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core.module';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
-    PageNotFoundComponent,
-    AuthComponent
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -28,9 +25,10 @@ import { CoreModule } from './core.module';
     FormsModule,
     HttpClientModule,
     ShoppingModule,
-    RecipesModule,
     SharedModule,
-    CoreModule
+    CoreModule,
+    AuthModule,
+    RecipesModule,
   ],
   bootstrap: [AppComponent]
 })
