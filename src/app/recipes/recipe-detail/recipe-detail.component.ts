@@ -24,6 +24,7 @@ export class RecipeDetailComponent implements OnInit {
    
   
   ngOnInit(): void {
+    //TODO refactor
     this.route.params.subscribe(
       (params : Params) => {
       this.id = params['id'];

@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { authGuard } from "../auth-gard.guard";
+import { authGuard } from "../auth/auth-gard.guard";
 import { ShoppingListComponent } from "./shopping-list.component";
 
 

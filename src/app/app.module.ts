@@ -10,7 +10,7 @@ import { ShoppingListService } from './shopping-list/shopping-List.service';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { RecipeService } from '../app/recipes/recipe.service';
 import { AuthComponent } from './auth/auth.component'
-import { AuthService } from './auth.service';
+import { AuthService } from './auth/auth.service';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 
 import { RecipesModule } from './recipes/recipes.module';
