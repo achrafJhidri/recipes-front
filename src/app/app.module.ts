@@ -11,19 +11,18 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { RecipeService } from '../app/recipes/recipe.service';
 import { AuthComponent } from './auth/auth.component'
 import { AuthService } from './auth.service';
-import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 
 import { RecipesModule } from './recipes/recipes.module';
 import { ShoppingModule } from './shopping-list/shopping.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     PageNotFoundComponent,
-    AuthComponent,
-    LoadingSpinnerComponent
+    AuthComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +31,8 @@ import { ShoppingModule } from './shopping-list/shopping.module';
     FormsModule,
     HttpClientModule,
     ShoppingModule,
-    RecipesModule
+    RecipesModule,
+    SharedModule
   ],
   providers: [ShoppingListService,RecipeService,AuthService,{provide : HTTP_INTERCEPTORS,useClass : AuthInterceptorService,multi:true}],
   bootstrap: [AppComponent]
