@@ -8,6 +8,7 @@ const routes: Routes = [
   {path : "shopping", loadChildren : () => import("./shopping-list/shopping.module").then(module => module.ShoppingModule)},
   {path : "recipes", loadChildren : () => import("./recipes/recipes.module").then(module => module.RecipesModule)},
   {path : "login", loadChildren : () => import("./auth/auth.module").then(module => module.AuthModule)},
+  {path : "admin", loadChildren : () => import("./admin/admin.module").then(module => module.AdminModule)},
   {path:"**", component : PageNotFoundComponent}
 ];
 

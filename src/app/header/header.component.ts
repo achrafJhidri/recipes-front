@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 export class HeaderComponent implements OnInit,OnDestroy {
   collapsed : boolean = true;
   isAuthenticated : boolean = false;
+  isAdmin : boolean = false;
   authenticationSub : Subscription ;
 
   constructor (private authService : AuthService){
@@ -19,6 +20,9 @@ export class HeaderComponent implements OnInit,OnDestroy {
   ngOnInit(): void {
     this.authenticationSub = this.authService.authenticatedUser.subscribe(user => {
       this.isAuthenticated = !!user;
+      if(user){
+        this.isAdmin= user.isAdmin();
+      }
     });
   }
 

@@ -27,7 +27,7 @@ export class AuthComponent {
       return; 
     const email = form.value.email;
     const password = form.value.password
-    let obs : Observable<AuthResponseData> ;
+    let obs : Observable<AuthResponseData> 
     this.isLoading=true;
       if(this.isLogingMode){
         obs = this.authSe.login(email,password);
@@ -36,6 +36,7 @@ export class AuthComponent {
       }  
 
     obs.subscribe((res )=> {
+        this.authSe.loadRoles()
         this.isLoading=false;
         this.route.navigate([''])
         },

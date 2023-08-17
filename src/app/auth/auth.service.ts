@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {  BehaviorSubject, catchError, tap, throwError } from 'rxjs';
+import {  BehaviorSubject, catchError,  tap, throwError } from 'rxjs';
 import { User } from '../shared/user.model';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment.development';
@@ -48,14 +48,14 @@ export class AuthService {
   }
 
   autoLogin(){
-    const parsedUser : {
-       email :  string,
+    const parsedUser : {email :  string,
        id : string,
        _token : string,
-       _tokenExpirationDate : string}= JSON.parse(localStorage.getItem("userData"));
+       _tokenExpirationDate : string, 
+       roles : string[]} = JSON.parse(localStorage.getItem("userData"));
        if(!parsedUser) return ;
        const expirationDate = new Date(parsedUser._tokenExpirationDate);
-       const loadedUser = new User(parsedUser.email,parsedUser.id,parsedUser._token,expirationDate)
+       const loadedUser = new User(parsedUser.email,parsedUser.id,parsedUser._token,expirationDate,parsedUser.roles)
        if(loadedUser.token){
         this.authenticatedUser.next(loadedUser);
         this.autoLogout(expirationDate.getTime() - new Date().getTime())
@@ -75,10 +75,29 @@ export class AuthService {
   private handleAuth(resData : AuthResponseData) {
     const expiresInInMilliSeconds = resData.expiresIn*1000 ;
     const expirationDate = new Date(new Date().getTime() + expiresInInMilliSeconds);
-    const user = new User(resData.email,resData.localId,resData.idToken,expirationDate);
+    const user = new User(resData.email,resData.localId,resData.idToken,expirationDate,[]);
     this.authenticatedUser.next(user);
     localStorage.setItem("userData",JSON.stringify(user))
     this.autoLogout(expiresInInMilliSeconds)
+  }
+
+  public loadRoles(){
+    const user  = this.authenticatedUser.value
+    let roles :  string[] = []
+    
+    this.http.post(this.AUTH_URL+"lookup?key="+environment.firebaseApiKey,{
+      idToken : user.token
+    }).subscribe( (userInfo : {users : [{customAttributes  }]}) => {
+      const customAttributes = userInfo.users[0].customAttributes;
+      if(customAttributes)
+       roles = JSON.parse(userInfo.users[0].customAttributes).roles 
+      else 
+       roles = ["READ", "WRITE"]
+       user.roles=roles;
+       this.authenticatedUser.next(user);
+       localStorage.setItem("userData",JSON.stringify(user))
+    })
+
   }
 }
 
