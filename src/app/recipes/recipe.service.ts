@@ -28,9 +28,7 @@ export class RecipeService  {
 
   addRecipe(recipe: Recipe) {
     this.http.post<Recipe>(this.RECIPES_URL,recipe).subscribe(() => {
-      this.getRecipies().subscribe(recipes => {
-        this.recipesSubject.next(recipes)
-      })
+      this.fetchAndNotifyRecipesChange();
     });
   }
   editRecipe(index : number,recipe : Recipe) {
